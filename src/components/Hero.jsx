@@ -4,11 +4,10 @@ import './Hero.css';
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
+
 
     const handleMouseMove = (e) => {
       const { clientX, clientY } = e;
@@ -21,30 +20,6 @@ const Hero = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
-  // Handle image loading
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-  };
-
-  const handleImageError = (e) => {
-    console.error('Image failed to load:', e.target.src);
-    setImageError(true);
-    setImageLoaded(false);
-    
-    // Fallback to the SVG placeholder
-    e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='350' viewBox='0 0 350 350'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23000000;stop-opacity:1' /%3E%3Cstop offset='25%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%238b5cf6;stop-opacity:1' /%3E%3Cstop offset='75%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23000000;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='350' height='350' fill='url(%23grad)'/%3E%3Ccircle cx='175' cy='130' r='50' fill='rgba(255,255,255,0.9)'/%3E%3Cpath d='M175 140 Q185 145 175 155 Q165 145 175 140' fill='%23333'/%3E%3Ccircle cx='165' cy='125' r='3' fill='%23333'/%3E%3Ccircle cx='185' cy='125' r='3' fill='%23333'/%3E%3Cpath d='M125 220 Q175 200 225 220 Q225 280 175 290 Q125 280 125 220' fill='rgba(255,255,255,0.8)'/%3E%3Ctext x='50%25' y='85%25' font-size='14' text-anchor='middle' dy='.3em' fill='rgba(255,255,255,0.8)'%3EDasari Naveen%3C/text%3E%3C/svg%3E";
-  };
-
-  // Multiple image path options to try
-  const imagePaths = [
-    '/images/men.avif',           // For deployed version (public folder)
-    './images/men.avif',          // Original path
-    '/assets/images/men.avif',    // Alternative assets folder
-    'images/men.avif',            // Without leading dot/slash
-    '/public/images/men.avif',    // Alternative public path
-  ];
 
   const FloatingElement = ({ delay, size, color, position }) => (
     <div
@@ -158,40 +133,14 @@ const Hero = () => {
             }}
           >
             <div className="floating-container hero-image-container">
-              {/* Loading indicator */}
-              {!imageLoaded && !imageError && (
-                <div className="image-loading-placeholder" style={{
-                  width: '350px',
-                  height: '350px',
-                  background: 'linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%)',
-                  backgroundSize: '20px 20px',
-                  backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  animation: 'pulse 2s infinite',
-                }}>
-                  <span style={{ fontSize: '18px', color: '#666' }}>Loading...</span>
-                </div>
-              )}
-
-              {/* Main Image with multiple fallback sources */}
-              <picture>
-                <source srcSet="/images/men.avif" type="image/avif" />
-                <source srcSet="/images/men.webp" type="image/webp" />
-                <source srcSet="/images/men.jpg" type="image/jpeg" />
-                <img
-                  src="/images/men.avif"
-                  alt="Dasari Naveen - Full Stack Developer"
-                  className="hero-profile-image hero-profile-image-3d"
-                  onLoad={handleImageLoad}
-                  onError={handleImageError}
-                  style={{
-                    display: imageLoaded || imageError ? 'block' : 'none'
-                  }}
-                />
-              </picture>
+              <img
+                src="./images/men.avif"
+                alt="Dasari Naveen - Full Stack Developer"
+                className="hero-profile-image hero-profile-image-3d"
+                onError={(e) => {
+                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='350' viewBox='0 0 350 350'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23000000;stop-opacity:1' /%3E%3Cstop offset='25%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%238b5cf6;stop-opacity:1' /%3E%3Cstop offset='75%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23000000;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='350' height='350' fill='url(%23grad)'/%3E%3Ccircle cx='175' cy='130' r='50' fill='rgba(255,255,255,0.9)'/%3E%3Cpath d='M175 140 Q185 145 175 155 Q165 145 175 140' fill='%23333'/%3E%3Ccircle cx='165' cy='125' r='3' fill='%23333'/%3E%3Ccircle cx='185' cy='125' r='3' fill='%23333'/%3E%3Cpath d='M125 220 Q175 200 225 220 Q225 280 175 290 Q125 280 125 220' fill='rgba(255,255,255,0.8)'/%3E%3Ctext x='50%25' y='85%25' font-size='14' text-anchor='middle' dy='.3em' fill='rgba(255,255,255,0.8)'%3EDasari Naveen%3C/text%3E%3C/svg%3E";
+                }}
+              />
               
               {/* Enhanced Rotating Rings */}
               <div className="hero-ring-1 rotating-ring" />
@@ -208,22 +157,6 @@ const Hero = () => {
             {/* Enhanced 3D Shadow */}
             <div className="hero-shadow-3d" />
           </div>
-
-          {/* Debug info (remove in production) */}
-          {process.env.NODE_ENV === 'development' && (
-            <div style={{ 
-              position: 'absolute', 
-              bottom: '-50px', 
-              left: '0', 
-              fontSize: '12px', 
-              color: '#666',
-              background: 'rgba(0,0,0,0.1)',
-              padding: '5px',
-              borderRadius: '3px'
-            }}>
-              Image Status: {imageLoaded ? 'Loaded ✅' : imageError ? 'Error ❌' : 'Loading...'}
-            </div>
-          )}
         </div>
       </div>
     </section>
